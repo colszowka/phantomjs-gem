@@ -7,6 +7,9 @@ It keeps installations of phantomjs in `$HOME/.phantomjs/VERSION/PLATFORM`. When
 will return the path to the phantomjs executable in there. If that is not present, it will first fetch and
 install the prebuilt packages suitable for the current plattform (currently Linux 32/64 or OS X supported).
 
+You will need `wget` on your system. For extraction, `bunzip2` and `tar` are required on Linux, and `unzip`
+on OS X. They should be installed already.
+
 **TL;DR:** Instead of manually installing phantomjs on your machines, use this gem. It will take care of it.
 
 ## Example
