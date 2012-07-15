@@ -1,5 +1,7 @@
 # Phantomjs as a Rubygem
 
+**DISCLAIMER: Alpha status, YMMV!**
+
 I am lazy as hell, and wanted to be able to install [PhantomJS](http://phantomjs.org) via Rubygems/Bundler
 when using [poltergeist](https://github.com/jonleighton/poltergeist).
 
@@ -61,5 +63,4 @@ three packages over, so tread with caution please :)
 (c) 2012 Christoph Olszowka
 
 Note that this project merely simplifies the installation of the entirely separate PhantomJS project
-via a Ruby gem. You can find the license information for PhantomJS in PHANTOMJS_LICENSE.BSD and further
-information at http://http://phantomjs.org/
+via a Ruby gem. You can find the license information for PhantomJS at http://http://phantomjs.org/
