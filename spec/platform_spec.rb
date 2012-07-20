@@ -35,8 +35,9 @@ describe Phantomjs::Platform do
       Phantomjs::Platform::Linux32.should be_useable
     end
 
-    it "reports another Linux32 Plateform as useable" do
+    it "reports another Linux32 Platform as useable" do
       Phantomjs::Platform.stub(:host_os).and_return('linux-gnu')
+      Phantomjs::Platform.stub(:architecture).and_return('i686')
       Phantomjs::Platform::Linux32.should be_useable
     end
 
