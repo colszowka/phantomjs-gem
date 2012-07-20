@@ -39,6 +39,8 @@ the Poltergeist capybara driver to use the phantomjs package from this gem:
     Capybara.register_driver :poltergeist do |app|
       Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
     end
+    
+Check out [the poltergeist docs](https://www.ruby-toolbox.com/gems/phantomjs) for all the options you can pass in there.
 
 ## A note about versions.
 
