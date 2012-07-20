@@ -80,7 +80,7 @@ module Phantomjs
     class Linux32 < Platform
       class << self
         def useable?
-          host_os.include?('linux') and architecture.include?('x86_32')
+          host_os.include?('linux') and (architecture.include?('x86_32') or architecture.include?('i686'))
         end
 
         def platform
