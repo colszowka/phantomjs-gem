@@ -35,6 +35,11 @@ describe Phantomjs::Platform do
       Phantomjs::Platform::Linux32.should be_useable
     end
 
+    it "reports another Linux32 Plateform as useable" do
+      Phantomjs::Platform.stub(:host_os).and_return('linux-gnu')
+      Phantomjs::Platform::Linux32.should be_useable
+    end
+
     it "returns the correct phantom js executable path for the platform" do
       Phantomjs.path.should =~ /x86_32-linux\/bin\/phantomjs$/
     end
