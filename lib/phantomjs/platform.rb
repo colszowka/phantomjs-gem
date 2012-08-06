@@ -47,10 +47,14 @@ module Phantomjs
           extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
 
           # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
-          FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
+          if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
+            STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
+          end
 
           # Clean up remaining files in tmp
-          FileUtils.rm_rf temp_dir
+          if FileUtils.rm_rf temp_dir
+            STDOUT.puts "Removed temporarily downloaded files."
+          end
         end
 
         raise "Failed to install phantomjs. Sorry :(" unless File.exist?(phantomjs_path)
