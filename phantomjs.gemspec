@@ -8,8 +8,9 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Auto-install phantomjs on demand for current platform. Comes with poltergeist integration.}
   gem.homepage      = "https://github.com/colszowka/phantomjs-gem"
 
+  gem.add_runtime_dependency 'poltergeist'
+
   gem.add_development_dependency 'rspec', "~> 2.10.0"
-  gem.add_development_dependency 'poltergeist'
   gem.add_development_dependency 'simplecov'
 
   gem.files         = `git ls-files`.split($\)

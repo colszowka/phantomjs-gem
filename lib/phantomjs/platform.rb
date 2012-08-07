@@ -29,8 +29,8 @@ module Phantomjs
         FileUtils.mkdir_p temp_dir
 
         Dir.chdir temp_dir do
-          unless system "wget #{package_url}"
-            raise "Failed to load phantomjs from #{package_url} :("
+          unless system "curl -O #{package_url}" or system "wget #{package_url}"
+            raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
           end
 
           case package_url.split('.').last
@@ -47,10 +47,14 @@ module Phantomjs
           extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
 
           # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
-          FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
+          if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
+            STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
+          end
 
           # Clean up remaining files in tmp
-          FileUtils.rm_rf temp_dir
+          if FileUtils.rm_rf temp_dir
+            STDOUT.puts "Removed temporarily downloaded files."
+          end
         end
 
         raise "Failed to install phantomjs. Sorry :(" unless File.exist?(phantomjs_path)
@@ -72,7 +76,7 @@ module Phantomjs
         end
 
         def package_url
-          'http://phantomjs.googlecode.com/files/phantomjs-1.6.0-linux-x86_64-dynamic.tar.bz2'
+          'http://phantomjs.googlecode.com/files/phantomjs-1.6.1-linux-x86_64-dynamic.tar.bz2'
         end
       end
     end
@@ -88,7 +92,7 @@ module Phantomjs
         end
 
         def package_url
-          'http://phantomjs.googlecode.com/files/phantomjs-1.6.0-linux-i686-dynamic.tar.bz2'
+          'http://phantomjs.googlecode.com/files/phantomjs-1.6.1-linux-i686-dynamic.tar.bz2'
         end
       end
     end
@@ -104,7 +108,7 @@ module Phantomjs
         end
 
         def package_url
-          'http://phantomjs.googlecode.com/files/phantomjs-1.6.0-macosx-static.zip'
+          'http://phantomjs.googlecode.com/files/phantomjs-1.6.1-macosx-static.zip'
         end
       end
     end
