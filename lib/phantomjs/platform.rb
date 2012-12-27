@@ -10,7 +10,11 @@ module Phantomjs
       end
 
       def phantomjs_path
-        File.expand_path File.join(Phantomjs.base_dir, platform, 'bin/phantomjs')
+        if system_phantomjs_installed?
+          `which phantomjs`.delete("\n")
+        else
+          File.expand_path File.join(Phantomjs.base_dir, platform, 'bin/phantomjs')
+        end
       end
 
       def system_phantomjs_version
