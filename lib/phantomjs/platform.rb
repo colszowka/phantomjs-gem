@@ -13,8 +13,16 @@ module Phantomjs
         File.expand_path File.join(Phantomjs.base_dir, platform, 'bin/phantomjs')
       end
 
+      def system_phantomjs_version
+        `phantomjs --version`.delete("\n")
+      end
+
+      def system_phantomjs_installed?
+        system_phantomjs_version == Phantomjs.version
+      end
+
       def installed?
-        File.exist? phantomjs_path
+        File.exist?(phantomjs_path) || system_phantomjs_installed?
       end
 
       # TODO: Clean this up, it looks like a pile of...
