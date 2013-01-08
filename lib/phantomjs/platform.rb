@@ -18,7 +18,10 @@ module Phantomjs
       end
 
       def system_phantomjs_version
-        `phantomjs --version`.delete("\n")
+        begin
+          `phantomjs --version`.delete("\n")
+        rescue
+        end
       end
 
       def system_phantomjs_installed?
@@ -26,7 +29,7 @@ module Phantomjs
       end
 
       def installed?
-        File.exist?(phantomjs_path) && system_phantomjs_installed?
+        File.exist?(phantomjs_path) || system_phantomjs_installed?
       end
 
       # TODO: Clean this up, it looks like a pile of...
