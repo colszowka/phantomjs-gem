@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'poltergeist'
 
-  gem.add_development_dependency 'rspec', "~> 2.10.0"
+  gem.add_development_dependency 'rspec', ">= 2.11.0"
   gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'rake'
 
