@@ -9,6 +9,9 @@ It keeps installations of phantomjs in `$HOME/.phantomjs/VERSION/PLATFORM`. When
 will return the path to the phantomjs executable in there. If that is not present, it will first fetch and
 install the prebuilt packages suitable for the current plattform (currently Linux 32/64 or OS X supported).
 
+If there is a phantomjs executable in your `$PATH` that matches the version number packaged in this gem, this one
+will be used instead of installing one in your `$HOME/.phantomjs`.
+
 You will need `cURL` or `wget` on your system. For extraction, `bunzip2` and `tar` are required on Linux, and `unzip`
 on OS X. They should be installed already.
 
