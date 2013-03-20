@@ -39,6 +39,14 @@ module Phantomjs
     def reset!
       @base_dir = @path = nil
     end
+
+    # Run phantomjs with the given arguments, and either
+    # return the stdout or yield each line to the passed block.
+    def run(*args)
+      command = ([path] + args).join(' ')
+      return `#{command}` unless block_given?
+      IO.popen(command).each_line { |line| yield line }
+    end
   end
 end
 
