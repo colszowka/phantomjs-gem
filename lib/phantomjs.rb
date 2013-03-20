@@ -42,10 +42,10 @@ module Phantomjs
 
     # Run phantomjs with the given arguments, and either
     # return the stdout or yield each line to the passed block.
-    def run(*args)
-      command = ([path] + args).join(' ')
-      return `#{command}` unless block_given?
-      IO.popen(command).each_line { |line| yield line }
+    def run(*args, &block)
+      IO.popen([path, *args]) do |io|
+        block ? io.each(&block) : io.read
+      end
     end
   end
 end
