@@ -1,5 +1,7 @@
 # PhantomJS as a Rubygem
 
+[![Build Status](https://travis-ci.org/colszowka/phantomjs-gem.png?branch=master)](https://travis-ci.org/colszowka/phantomjs-gem)
+
 **DISCLAIMER: Alpha status, YMMV!**
 
 I am lazy as hell, and wanted to be able to install
