@@ -13,7 +13,8 @@ module Phantomjs
         if system_phantomjs_installed?
           system_phantomjs_path
         else
-          File.expand_path File.join(Phantomjs.base_dir, platform, 'bin/phantomjs')
+          path = File.join(Phantomjs.base_dir, platform, 'bin/phantomjs')
+          File.expand_path path
         end
       end
 
@@ -37,45 +38,54 @@ module Phantomjs
 
       # TODO: Clean this up, it looks like a pile of...
       def install!
-        STDERR.puts "Phantomjs does not appear to be installed in #{phantomjs_path}, installing!"
+        STDERR.puts "PhantomJS does not appear to be installed in " \
+                    "#{phantomjs_path}, installing!"
         FileUtils.mkdir_p Phantomjs.base_dir
 
-        # Purge temporary directory if it is still hanging around from previous installs,
-        # then re-create it.
+        # Purge temporary directory if it is still hanging around from previous
+        # installs, then re-create it.
         temp_dir = File.join('/tmp', 'phantomjs_install')
         FileUtils.rm_rf temp_dir
         FileUtils.mkdir_p temp_dir
 
         Dir.chdir temp_dir do
           unless system "curl -O #{package_url}" or system "wget #{package_url}"
-            raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
+            raise "\n\nFailed to load PhantomJS! :(\n" \
+                  "You need to have cURL or wget installed on your system.\n" \
+                  "If you have, the source of PhantomJS might be " \
+                  "unavailable: #{package_url}\n\n"
           end
 
           case package_url.split('.').last
-            when 'bz2'
-              system "bunzip2 #{File.basename(package_url)}"
-              system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
-            when 'zip'
-              system "unzip #{File.basename(package_url)}"
-            else
-              raise "Unknown compression format for #{File.basename(package_url)}"
+          when 'bz2'
+            system "bunzip2 #{File.basename(package_url)}"
+            system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
+          when 'zip'
+            system "unzip #{File.basename(package_url)}"
+          else
+            raise "Unknown compression format for #{File.basename(package_url)}"
           end
 
-          # Find the phantomjs build we just extracted
-          extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
+          # Find the PhantomJS build we just extracted
+          extracted_dir = Dir['phantomjs*'].find do |path|
+            File.directory?(path)
+          end
 
-          # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
+          # Move the extracted PhantomJS build to
+          # $HOME/.phantomjs/version/platform
           if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
-            STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
+            STDOUT.puts "\nSuccessfully installed PhantomJS. Yay!"
           end
 
           # Clean up remaining files in tmp
           if FileUtils.rm_rf temp_dir
-            STDOUT.puts "Removed temporarily downloaded files."
+            STDOUT.puts 'Removed temporarily downloaded files.'
           end
         end
 
-        raise "Failed to install phantomjs. Sorry :(" unless File.exist?(phantomjs_path)
+        unless File.exist?(phantomjs_path)
+          raise 'Failed to install PhantomJS. Sorry :('
+        end
       end
 
       def ensure_installed!
@@ -102,7 +112,8 @@ module Phantomjs
     class Linux32 < Platform
       class << self
         def useable?
-          host_os.include?('linux') and (architecture.include?('x86_32') or architecture.include?('i686'))
+          host_os.include?('linux') and
+            (architecture.include?('x86_32') or architecture.include?('i686'))
         end
 
         def platform
