@@ -94,7 +94,7 @@ module Phantomjs
         end
 
         def package_url
-          'http://phantomjs.googlecode.com/files/phantomjs-1.8.1-linux-x86_64.tar.bz2'
+          'http://phantomjs.googlecode.com/files/phantomjs-1.9.0-linux-x86_64.tar.bz2'
         end
       end
     end
@@ -110,7 +110,7 @@ module Phantomjs
         end
 
         def package_url
-          'http://phantomjs.googlecode.com/files/phantomjs-1.8.1-linux-i686.tar.bz2'
+          'http://phantomjs.googlecode.com/files/phantomjs-1.9.0-linux-i686.tar.bz2'
         end
       end
     end
@@ -126,7 +126,7 @@ module Phantomjs
         end
 
         def package_url
-          'http://phantomjs.googlecode.com/files/phantomjs-1.8.1-macosx.zip'
+          'http://phantomjs.googlecode.com/files/phantomjs-1.9.0-macosx.zip'
         end
       end
     end
