@@ -4,7 +4,6 @@ require 'bundler/setup'
 
 require 'phantomjs'
 require 'capybara/rspec'
-require 'capybara/poltergeist'
 
 Phantomjs.implode!
 
