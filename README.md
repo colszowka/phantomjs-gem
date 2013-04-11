@@ -35,11 +35,15 @@ on OS X. They should be installed already.
 Add this to your `Gemfile`:
 
     group :test do
+      gem 'poltergeist'
       gem 'phantomjs', :require => 'phantomjs/poltergeist'
     end
 
 This will automatically require (and install) phantomjs and configure Capybara in the same way as noted below for
-manual setup
+manual setup.
+
+Note that you need to add poltergeist as a dependency explicitly since it is not a dependency of this gem in order
+to avoid forcing users to install poltergeist if the just want to use phantomjs itself.
 
 ### Manual setup
 
