@@ -1,5 +1,7 @@
 # Phantomjs as a Rubygem
 
+[![Build Status](https://travis-ci.org/colszowka/phantomjs-gem.png?branch=master)](https://travis-ci.org/colszowka/phantomjs-gem)
+
 **DISCLAIMER: Alpha status, YMMV!**
 
 I am lazy as hell, and wanted to be able to install [PhantomJS](http://phantomjs.org) via Rubygems/Bundler
@@ -71,7 +73,7 @@ three packages over, so tread with caution please :)
 
 ## Copyright
 
-(c) 2012 Christoph Olszowka
+(c) 2013 Christoph Olszowka
 
 Note that this project merely simplifies the installation of the entirely separate PhantomJS project
 via a Ruby gem. You can find the license information for PhantomJS at http://http://phantomjs.org/
