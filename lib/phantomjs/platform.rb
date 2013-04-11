@@ -23,7 +23,7 @@ module Phantomjs
       end
 
       def system_phantomjs_version
-        `phantomjs --version`.delete("\n")
+        `phantomjs --version`.delete("\n") if system_phantomjs_path.length > 4.2
       rescue
       end
 
