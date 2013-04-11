@@ -1,9 +1,8 @@
 Note that this project merely bundles the separate PhantomJS project
 into a Ruby gem. You can find the license information for PhantomJS
-inside phantomjs/LICENSE.BSD and further information at 
-http://http://phantomjs.org/
+inside phantomjs/LICENSE.BSD and further information at http://phantomjs.org/
 
-Copyright (c) 2012 Christoph Olszowka
+Copyright (c) 2013 Christoph Olszowka
 
 MIT License
 

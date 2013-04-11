@@ -1,4 +1,4 @@
-require "phantomjs/version"
+require 'phantomjs/version'
 require 'fileutils'
 
 module Phantomjs
@@ -26,11 +26,13 @@ module Phantomjs
         platform.ensure_installed!
         platform
       else
-        raise UnknownPlatform, "Could not find an appropriate PhantomJS library for your platform (#{RUBY_PLATFORM} :( Please install manually."
+        raise UnknownPlatform, "Could not find an appropriate PhantomJS" \
+                               "library for your platform (#{RUBY_PLATFORM}) " \
+                               ":( Please install manually."
       end
     end
 
-    # Removes the local phantomjs copy
+    # Removes the local PhantomJS copy
     def implode!
       FileUtils.rm_rf File.join(File.expand_path('~'), '.phantomjs')
     end
@@ -40,7 +42,7 @@ module Phantomjs
       @base_dir = @path = nil
     end
 
-    # Run phantomjs with the given arguments, and either
+    # Run PhantomJS with the given arguments, and either
     # return the stdout or yield each line to the passed block.
     def run(*args, &block)
       IO.popen([path, *args]) do |io|
