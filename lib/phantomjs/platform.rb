@@ -46,6 +46,8 @@ module Phantomjs
         FileUtils.rm_rf temp_dir
         FileUtils.mkdir_p temp_dir
 
+        warn if respond_to? :warn
+
         Dir.chdir temp_dir do
           unless system "curl -O #{package_url}" or system "wget #{package_url}"
             raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
@@ -102,7 +104,11 @@ module Phantomjs
     class Linux32 < Platform
       class << self
         def useable?
-          host_os.include?('linux') and (architecture.include?('x86_32') or architecture.include?('i686'))
+          host_os.include?('linux') and architecture =~ /i[3-6]86/
+        end
+
+        def warn
+          STDERR.puts "WARNING! Using i686, but Ruby was compiled for #{architecture}. You can check your actual architecture with uname -m." if architecture =~ /i[3-5]86/
         end
 
         def platform
