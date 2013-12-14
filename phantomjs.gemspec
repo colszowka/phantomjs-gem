@@ -7,6 +7,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Auto-install phantomjs on demand for current platform. Comes with poltergeist integration.}
   gem.summary       = %q{Auto-install phantomjs on demand for current platform. Comes with poltergeist integration.}
   gem.homepage      = "https://github.com/colszowka/phantomjs-gem"
+  gem.license       = 'MIT'
 
   gem.add_development_dependency 'poltergeist'
   gem.add_development_dependency 'rspec', ">= 2.11.0"
