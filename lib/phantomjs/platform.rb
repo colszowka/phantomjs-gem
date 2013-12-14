@@ -9,6 +9,10 @@ module Phantomjs
         RbConfig::CONFIG['host_cpu']
       end
 
+      def temp_path
+        ENV['TMPDIR'] || ENV['TEMP'] || '/tmp'
+      end
+
       def phantomjs_path
         if system_phantomjs_installed?
           system_phantomjs_path
@@ -42,7 +46,7 @@ module Phantomjs
 
         # Purge temporary directory if it is still hanging around from previous installs,
         # then re-create it.
-        temp_dir = File.join('/tmp', 'phantomjs_install')
+        temp_dir = File.join(temp_path, 'phantomjs_install')
         FileUtils.rm_rf temp_dir
         FileUtils.mkdir_p temp_dir
 
@@ -127,6 +131,30 @@ module Phantomjs
 
         def package_url
           'http://phantomjs.googlecode.com/files/phantomjs-1.9.2-macosx.zip'
+        end
+      end
+    end
+
+    class Win32 < Platform
+      class << self
+        def useable?
+          host_os.include?('mingw32') and architecture.include?('i686')
+        end
+
+        def platform
+          'win32'
+        end
+
+        def phantomjs_path
+          if system_phantomjs_installed?
+            system_phantomjs_path
+          else
+            File.expand_path File.join(Phantomjs.base_dir, platform, 'phantomjs.exe')
+          end
+        end
+
+        def package_url
+          'https://phantomjs.googlecode.com/files/phantomjs-1.9.2-windows.zip'
         end
       end
     end
