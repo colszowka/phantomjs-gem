@@ -55,4 +55,3 @@ Phantomjs.available_platforms << Phantomjs::Platform::Linux32
 Phantomjs.available_platforms << Phantomjs::Platform::Linux64
 Phantomjs.available_platforms << Phantomjs::Platform::OsX
 Phantomjs.available_platforms << Phantomjs::Platform::Win32
-
