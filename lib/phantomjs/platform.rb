@@ -32,7 +32,8 @@ module Phantomjs
       end
 
       def system_phantomjs_installed?
-        system_phantomjs_version == Phantomjs.version
+        version = system_phantomjs_version
+        version ? version >= Phantomjs.version : false
       end
 
       def installed?
