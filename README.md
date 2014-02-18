@@ -80,4 +80,4 @@ three packages over, so tread with caution please :)
 (c) 2013 Christoph Olszowka
 
 Note that this project merely simplifies the installation of the entirely separate PhantomJS project
-via a Ruby gem. You can find the license information for PhantomJS at http://http://phantomjs.org/
+via a Ruby gem. You can find the license information for PhantomJS at http://phantomjs.org/
