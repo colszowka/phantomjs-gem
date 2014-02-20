@@ -4,7 +4,7 @@ script:
 rvm:
   - 1.9.3
   - 2.0.0
-  - rbx-19mode
+  - rbx-1.9.3
 notifications:
   email:
     on_success: always
