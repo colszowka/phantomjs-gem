@@ -1,4 +1,4 @@
-# Phantomjs as a Rubygem
+# PhantomJS as a RubyGem
 
 [![Build Status](https://travis-ci.org/colszowka/phantomjs-gem.png?branch=master)](https://travis-ci.org/colszowka/phantomjs-gem)
 
