@@ -21,23 +21,27 @@ on OS X. They should be installed already.
 
 ## Example
 
-    require 'phantomjs'
-    Phantomjs.path # => path to a phantom js executable suitable to your current platform. Will install before return when not installed yet.
+```ruby
+require 'phantomjs'
+Phantomjs.path # => path to a phantom js executable suitable to your current platform. Will install before return when not installed yet.
 
-    # Or run phantomjs with the passed arguments:
-    Phantomjs.run('./path/to/script.js') # => returns stdout
+# Or run phantomjs with the passed arguments:
+Phantomjs.run('./path/to/script.js') # => returns stdout
 
-    # Also takes a block to receive each line of output:
-    Phantomjs.run('./path/to/script.js') { |line| puts line }
+# Also takes a block to receive each line of output:
+Phantomjs.run('./path/to/script.js') { |line| puts line }
+```
 
 ## Usage with Poltergeist/Capybara
 
 Add this to your `Gemfile`:
 
-    group :test do
-      gem 'poltergeist'
-      gem 'phantomjs', :require => 'phantomjs/poltergeist'
-    end
+```ruby
+group :test do
+    gem 'poltergeist'
+    gem 'phantomjs', :require => 'phantomjs/poltergeist'
+end
+```
 
 This will automatically require (and install) phantomjs and configure Capybara in the same way as noted below for
 manual setup.
@@ -50,10 +54,12 @@ to avoid forcing users to install poltergeist if the just want to use phantomjs 
 Add `gem 'phantomjs', :group => :test` to your `Gemfile` and run `bundle`. In your test/spec helper, re-configure
 the Poltergeist capybara driver to use the phantomjs package from this gem:
 
-    require 'phantomjs' # <-- Not required if your app does Bundler.require automatically (e.g. when using Rails)
-    Capybara.register_driver :poltergeist do |app|
-      Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
-    end
+```ruby
+require 'phantomjs' # <-- Not required if your app does Bundler.require automatically (e.g. when using Rails)
+Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
+end
+```
 
 Check out [the poltergeist docs](https://www.ruby-toolbox.com/gems/phantomjs) for all the options you can pass in there.
 
