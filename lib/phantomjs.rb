@@ -13,6 +13,10 @@ module Phantomjs
        @base_dir ||= File.join(File.expand_path('~'), '.phantomjs', version)
     end
 
+    def base_dir=(dir)
+      @base_dir = dir
+    end
+
     def version
       Phantomjs::VERSION.split('.')[0..-2].join('.')
     end
