@@ -77,7 +77,7 @@ three packages over, so tread with caution please :)
 
 ## Copyright
 
-(c) 2013 Christoph Olszowka
+(c) 2013-2014 Christoph Olszowka
 
 Note that this project merely simplifies the installation of the entirely separate PhantomJS project
 via a Ruby gem. You can find the license information for PhantomJS at http://phantomjs.org/
