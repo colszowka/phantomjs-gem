@@ -32,7 +32,8 @@ module Phantomjs
       end
 
       def system_phantomjs_installed?
-        system_phantomjs_version == Phantomjs.version
+        system = Version.new(system_phantomjs_version || -INFINITY)
+        system.between?(Phantomjs.minimum, Phantomjs.maximum)
       end
 
       def installed?
