@@ -1,10 +1,29 @@
-require "phantomjs/version"
+require 'phantomjs/version'
 require 'fileutils'
 
 module Phantomjs
   class UnknownPlatform < StandardError; end;
 
+  # @todo: remove once an infinity constant is standard
+  INFINITY = defined?(Float::INFINITY) ? Float::INFINITY : (1.0/0.0)
+
   class << self
+    def minimum
+      @minimum ||= Version.new(version)
+    end
+
+    def minimum=(minimum)
+      @minimum = Version.new(minimum)
+    end
+
+    def maximum
+      @maximum ||= Version.new(INFINITY)
+    end
+
+    def maximum=(maximum)
+      @maximum = Version.new(maximum)
+    end
+
     def available_platforms
       @available_platforms ||= []
     end
@@ -18,7 +37,7 @@ module Phantomjs
     end
 
     def version
-      Phantomjs::VERSION.split('.')[0..-2].join('.')
+      Phantomjs::BINARY_VERSION
     end
 
     def path
