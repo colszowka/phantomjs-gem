@@ -51,7 +51,7 @@ module Phantomjs
         FileUtils.mkdir_p temp_dir
 
         Dir.chdir temp_dir do
-          unless system "curl -O #{package_url}" or system "wget #{package_url}"
+          unless system "curl -L -O #{package_url}" or system "wget #{package_url}"
             raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
           end
 
