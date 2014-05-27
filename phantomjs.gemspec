@@ -10,6 +10,7 @@ Gem::Specification.new do |gem|
   gem.license       = 'MIT'
 
   gem.add_development_dependency 'poltergeist'
+  gem.add_development_dependency 'capybara', '~> 2.0.0'
   gem.add_development_dependency 'rspec', ">= 2.11.0"
   gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'rake'
