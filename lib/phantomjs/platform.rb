@@ -145,6 +145,11 @@ module Phantomjs
           'win32'
         end
 
+        def system_phantomjs_path
+          `where phantomjs`.delete("\n")
+        rescue
+        end
+
         def phantomjs_path
           if system_phantomjs_installed?
             system_phantomjs_path
