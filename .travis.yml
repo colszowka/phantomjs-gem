@@ -1,11 +1,20 @@
+language: ruby
+sudo: false
 script:
-  - bundle
   - bundle exec rspec
+cache:
+  bundler: true
+  directories:
+    - $HOME/.phantomjs
 rvm:
   - 1.9
   - 2.0
   - 2.1
   - jruby-19mode
+  - rbx
+matrix:
+  allow_failures:
+    - rvm: rbx
 notifications:
   email:
     on_success: always
