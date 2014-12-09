@@ -1,6 +1,8 @@
+language: ruby
+sudo: false
 script:
-  - bundle
   - bundle exec rspec
+cache: bundler
 rvm:
   - 1.9
   - 2.0
