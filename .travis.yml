@@ -2,7 +2,10 @@ language: ruby
 sudo: false
 script:
   - bundle exec rspec
-cache: bundler
+cache:
+  bundler: true
+  directories:
+    - $HOME/.phantomjs
 rvm:
   - 1.9
   - 2.0
