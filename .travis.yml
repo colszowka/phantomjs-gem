@@ -11,6 +11,10 @@ rvm:
   - 2.0
   - 2.1
   - jruby-19mode
+  - rbx
+matrix:
+  allow_failures:
+    - rvm: rbx
 notifications:
   email:
     on_success: always
