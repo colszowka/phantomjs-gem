@@ -9,9 +9,9 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/colszowka/phantomjs-gem"
   gem.license       = 'MIT'
 
-  gem.add_development_dependency 'poltergeist'
-  gem.add_development_dependency 'capybara', '~> 2.0.0'
-  gem.add_development_dependency 'rspec', ">= 2.11.0"
+  gem.add_development_dependency 'poltergeist', '~> 1.5'
+  gem.add_development_dependency 'capybara', '~> 2.4'
+  gem.add_development_dependency 'rspec', "~> 2.99"
   gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'rake'
 
