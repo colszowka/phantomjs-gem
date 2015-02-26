@@ -47,7 +47,7 @@ module Phantomjs
     # Run phantomjs with the given arguments, and either
     # return the stdout or yield each line to the passed block.
     def run(*args, &block)
-      IO.popen([path, *args]) do |io|
+      IO.popen([path, *args], :external_encoding => 'UTF-8') do |io|
         block ? io.each(&block) : io.read
       end
     end
