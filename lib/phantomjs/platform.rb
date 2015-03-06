@@ -130,7 +130,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-macosx.zip'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.0.0-macosx.zip'
         end
       end
     end
@@ -154,7 +154,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-windows.zip'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.0.0-windows.zip'
         end
       end
     end
