@@ -48,7 +48,7 @@ module Phantomjs
     # return the stdout or yield each line to the passed block.
     def run(*args, &block)
       data = []
-      data = `#{path} #{*args}`
+      data = `#{path} #{args}`
       data.each(&block)
     end
   end
