@@ -51,31 +51,35 @@ module Phantomjs
         FileUtils.mkdir_p temp_dir
 
         Dir.chdir temp_dir do
-          unless system "curl -L -O #{package_url}" or system "wget #{package_url}"
-            raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
-          end
+          #If the packgae_url is remote, download it, extract it
+          if package_url =~ /http:\/\//
+            unless system "curl -L -O #{package_url}" or system "wget #{package_url}"
+              raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
+            end
 
-          case package_url.split('.').last
-            when 'bz2'
-              system "bunzip2 #{File.basename(package_url)}"
-              system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
-            when 'zip'
-              system "unzip #{File.basename(package_url)}"
-            else
-              raise "Unknown compression format for #{File.basename(package_url)}"
-          end
+            case package_url.split('.').last
+              when 'bz2'
+                system "bunzip2 #{File.basename(package_url)}"
+                system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
+              when 'zip'
+                system "unzip #{File.basename(package_url)}"
+              else
+                raise "Unknown compression format for #{File.basename(package_url)}"
+            end
 
-          # Find the phantomjs build we just extracted
-          extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
+            # Find the phantomjs build we just extracted
+            extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
 
-          # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
-          if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
-            STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
-          end
+            # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
+            if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
+              STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
+            end
 
-          # Clean up remaining files in tmp
-          if FileUtils.rm_rf temp_dir
-            STDOUT.puts "Removed temporarily downloaded files."
+            # Clean up remaining files in tmp
+            if FileUtils.rm_rf temp_dir
+              STDOUT.puts "Removed temporarily downloaded files."
+            end
+          else
           end
         end
 
@@ -84,6 +88,29 @@ module Phantomjs
 
       def ensure_installed!
         install! unless installed?
+      end
+    end
+
+    class FreeBSD < Platform
+      class << self
+        def useable?
+          $stderr.puts "host_os = #{host_os.inspect}"
+          (host_os =~ /freebsd/i) != nil
+        end
+
+        def platform
+          'FreeBSD'
+        end
+
+        def package_url
+          #Download & Install via pkg utility, we need to set this environmental flag
+          #so that it can be done unassisted
+          ENV['ASSUME_ALWAYS_YES'] = "YES"
+            system "pkg install phantomjs"
+          ENV['ASSUME_ALWAYS_YES'] = nil
+
+          return `which phantomjs`
+        end
       end
     end
 
