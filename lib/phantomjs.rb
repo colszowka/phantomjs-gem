@@ -5,6 +5,8 @@ module Phantomjs
   class UnknownPlatform < StandardError; end;
 
   class << self
+    attr_accessor :proxy_host, :proxy_port
+
     def available_platforms
       @available_platforms ||= []
     end

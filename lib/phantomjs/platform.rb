@@ -51,7 +51,7 @@ module Phantomjs
         FileUtils.mkdir_p temp_dir
 
         Dir.chdir temp_dir do
-          unless system "curl -L -O #{package_url}" or system "wget #{package_url}"
+          unless system "curl -L -O #{package_url} #{curl_proxy_options}" or system "wget #{package_url} #{wget_proxy_options}"
             raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
           end
 
@@ -84,6 +84,18 @@ module Phantomjs
 
       def ensure_installed!
         install! unless installed?
+      end
+
+      private
+
+      def curl_proxy_options
+        return '' if Phantomjs.proxy_host.nil? && Phantomjs.proxy_port.nil?
+        "-x #{Phantomjs.proxy_host}:#{Phantomjs.proxy_port}"
+      end
+
+      def wget_proxy_options
+        return '' if Phantomjs.proxy_host.nil? && Phantomjs.proxy_port.nil?
+        "-e use_proxy=yes -e http_proxy=#{Phantomjs.proxy_host}:#{Phantomjs.proxy_port}"
       end
     end
 
