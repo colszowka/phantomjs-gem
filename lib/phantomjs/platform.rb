@@ -47,31 +47,21 @@ module Phantomjs
         STDERR.puts "Phantomjs does not appear to be installed in #{phantomjs_path}, installing!"
         FileUtils.mkdir_p Phantomjs.base_dir
 
-        Dir.mktmpdir('phantomjs_install') do |temp_dir|
-          Dir.chdir(temp_dir) do
-            unless system "curl -L -O #{package_url}" or system "wget #{package_url}"
-              raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
-            end
-
-            case package_url.split('.').last
-              when 'bz2'
-                bunzip(File.basename(package_url))
-              when 'zip'
-                unzip(File.basename(package_url))
-              else
-                raise "Unknown compression format for #{File.basename(package_url)}"
-            end
-
-            # Find the phantomjs build we just extracted
-            extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
-
-            fail "Could not find extracted phantomjs directory in #{File.join(Dir.pwd, 'phantomjs*')}" if extracted_dir.nil?
-
-            # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
-            if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
-              STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
-            end
+        in_tmp do
+          unless system "curl -L -O #{package_url}" or system "wget #{package_url}"
+            raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
           end
+
+          case package_url.split('.').last
+            when 'bz2'
+              bunzip(File.basename(package_url))
+            when 'zip'
+              unzip(File.basename(package_url))
+            else
+              raise "Unknown compression format for #{File.basename(package_url)}"
+          end
+
+          move_to_local_directory
         end
 
         raise "Failed to install phantomjs. Sorry :(" unless File.exist?(phantomjs_path)
@@ -82,6 +72,13 @@ module Phantomjs
       end
 
       private
+      def in_tmp
+        Dir.mktmpdir('phantomjs_install') do |dir|
+          Dir.chdir(dir) do
+            yield if block_given?
+          end
+        end
+      end
       def bunzip(file)
         bunzip = %W(bunzip2 #{file})
         system(*bunzip)
@@ -102,6 +99,17 @@ module Phantomjs
           zip.each do |entry|
             entry.extract
           end
+        end
+      end
+
+      def move_to_local_directory
+        extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
+
+        fail "Could not find extracted phantomjs directory in #{File.join(Dir.pwd, 'phantomjs*')}" if extracted_dir.nil?
+
+        # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
+        if FileUtils.mv(extracted_dir, File.join(Phantomjs.base_dir, platform))
+          STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
         end
       end
     end
