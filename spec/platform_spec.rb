@@ -6,17 +6,17 @@ describe Phantomjs::Platform do
     describe "#system_phantomjs_installed?" do
       it "is true when the system version matches Phantomjs.version" do
         Phantomjs::Platform.should_receive(:system_phantomjs_version).and_return(Phantomjs.version)
-        expect(Phantomjs::Platform.system_phantomjs_installed?).to be_true
+        expect(Phantomjs::Platform.system_phantomjs_installed?).to be true
       end
 
       it "is false when the system version does not match Phantomjs.version" do
         Phantomjs::Platform.should_receive(:system_phantomjs_version).and_return('1.2.3')
-        expect(Phantomjs::Platform.system_phantomjs_installed?).to be_false
+        expect(Phantomjs::Platform.system_phantomjs_installed?).to be false
       end
 
       it "is false when there's no system version" do
         Phantomjs::Platform.should_receive(:system_phantomjs_version).and_return(nil)
-        expect(Phantomjs::Platform.system_phantomjs_installed?).to be_false
+        expect(Phantomjs::Platform.system_phantomjs_installed?).to be false
       end
     end
   end
