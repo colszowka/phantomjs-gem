@@ -13,7 +13,8 @@ HTML_RESPONSE = <<HTML
   </body>
   </html>
 HTML
-Capybara.app = lambda {|env| [200, {"Content-Type" => "text/html"}, [HTML_RESPONSE]] }
+
+Capybara.app = lambda { |_env| [200, { 'Content-Type' => 'text/html' }, [HTML_RESPONSE]] }
 Capybara.default_driver = :poltergeist
 
 describe Phantomjs do
@@ -21,30 +22,30 @@ describe Phantomjs do
     include Capybara::DSL
 
     before { visit '/' }
-    it "has displayed static html content" do
-      within('h1') { page.should have_content('Hello') }
+    it 'has displayed static html content' do
+      within('h1') { expect(page).to have_content('Hello') }
     end
 
-    it "has processed javascript" do
-      within "#js" do
-        page.should_not have_content('NO JS :(')
-        page.should have_content('OMG JS!')
+    it 'has processed javascript' do
+      within '#js' do
+        expect(page).to_not have_content('NO JS :(')
+        expect(page).to have_content('OMG JS!')
       end
     end
   end
 
-  describe ".run" do
-    it "runs phantomjs binary with the correct arguments" do
+  describe '.run' do
+    it 'runs phantomjs binary with the correct arguments' do
       script = File.expand_path('./spec/runner.js')
       result = Phantomjs.run(script, 'foo1', 'foo2')
-      result.should eq("bar foo1\nbar foo2\n")
+      expect(result).to eq("bar foo1\nbar foo2\n")
     end
 
-    it "accepts a block that will get called for each line of output" do
+    it 'accepts a block that will get called for each line of output' do
       lines = []
       script = File.expand_path('./spec/runner.js')
       Phantomjs.run(script, 'foo1', 'foo2') { |line| lines << line }
-      lines.should eq(["bar foo1\n", "bar foo2\n"])
+      expect(lines).to eq(["bar foo1\n", "bar foo2\n"])
     end
   end
 end
