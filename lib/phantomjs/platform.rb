@@ -99,6 +99,8 @@ module Phantomjs
           http.request(request) do |response|
             case response
               when Net::HTTPSuccess then
+                STDOUT.puts("Downloading from #{uri}")
+
                 File.open(file, 'wb') do |io|
                   downloaded = 0
 
