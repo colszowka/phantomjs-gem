@@ -21,12 +21,16 @@ module Phantomjs
         if system_phantomjs_installed?
           system_phantomjs_path
         else
-          File.expand_path File.join(Phantomjs.base_dir, platform, 'bin', 'phantomjs')
+          File.expand_path(File.join(Phantomjs.base_dir, platform, 'bin', phantomjs_executable))
         end
       end
 
+      def phantomjs_executable
+        'phantomjs'
+      end
+
       def system_phantomjs_path
-        which('phantomjs')
+        which(phantomjs_executable)
       end
 
       def system_phantomjs_version
@@ -59,8 +63,6 @@ module Phantomjs
 
           move_to_local_directory
         end
-
-        raise 'Failed to install phantomjs. Sorry :(' unless File.exist?(phantomjs_path)
       end
 
       def ensure_installed!
@@ -156,9 +158,14 @@ module Phantomjs
         target = File.join(Phantomjs.base_dir, platform)
 
         FileUtils.mkdir_p(File.dirname(target))
-        if FileUtils.mv(extracted_dir, target)
-          STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
+        FileUtils.mv(extracted_dir, target)
+
+        if File.exist?(phantomjs_path)
+          STDOUT.puts "\nSuccessfully installed phantomjs in #{phantomjs_path}. Yay!"
+          return
         end
+
+        fail "Failed to install phantomjs. Could not find #{phantomjs_path}. Sorry :("
       end
     end
 
@@ -218,6 +225,10 @@ module Phantomjs
 
         def platform
           'win32'
+        end
+
+        def phantomjs_executable
+          'phantomjs.exe'
         end
 
         def package_url
