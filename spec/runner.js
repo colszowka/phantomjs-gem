@@ -1,5 +1,6 @@
 var system = require('system');
+var args = system.args;
 
-console.log('bar ' + system.args[1]);
-console.log('bar ' + system.args[2]);
+console.log('bar ' + args[1]);
+console.log('bar ' + args[2]);
 phantom.exit();
