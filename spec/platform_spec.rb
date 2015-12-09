@@ -153,7 +153,7 @@ describe Phantomjs::Platform do
     end
   end
 
-  describe "on Windows" do
+  describe "on Windows x86" do
     before do
       Phantomjs::Platform.stub(:host_os).and_return('mingw32')
       Phantomjs::Platform.stub(:architecture).and_return('i686')
@@ -164,6 +164,44 @@ describe Phantomjs::Platform do
 
       it "returns the correct phantom js executable path for the platform" do
         Phantomjs.path.should =~ /win32\/bin\/phantomjs.exe$/
+      end
+    end
+
+    describe "with system install" do
+      before(:each) do
+        Phantomjs::Platform.stub(:system_phantomjs_version).and_return(Phantomjs.version)
+        Phantomjs::Platform.stub(:system_phantomjs_path).and_return("#{ENV['TEMP']}/path")
+      end
+
+      it "returns the correct phantom js executable path for the platform" do
+        expect(Phantomjs.path).to be == "#{ENV['TEMP']}/path"
+      end
+    end
+
+    it "reports the Darwin platform as unuseable" do
+      Phantomjs::Platform::OsX.should_not be_useable
+    end
+
+    it "reports the Linux32 Platform as unuseable" do
+      Phantomjs::Platform::Linux32.should_not be_useable
+    end
+
+    it "reports the Linux64 platform as unuseable" do
+      Phantomjs::Platform::Linux64.should_not be_useable
+    end
+  end
+
+  describe "on Windows x64" do
+    before do
+      Phantomjs::Platform.stub(:host_os).and_return('mingw32')
+      Phantomjs::Platform.stub(:architecture).and_return('x86_64')
+    end
+
+    describe "without system install" do
+      before(:each) { Phantomjs::Platform.stub(:system_phantomjs_version).and_return(nil) }
+
+      it "returns the correct phantom js executable path for the platform" do
+        Phantomjs.path.should =~ /win32\/phantomjs.exe$/
       end
     end
 

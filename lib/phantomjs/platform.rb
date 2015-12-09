@@ -154,7 +154,7 @@ module Phantomjs
     class Win32 < Platform
       class << self
         def useable?
-          host_os.include?('mingw32') and architecture.include?('i686')
+          host_os.include?('mingw32') && (architecture.include?('i686') || architecture.include?('x86_64'))
         end
 
         def platform
