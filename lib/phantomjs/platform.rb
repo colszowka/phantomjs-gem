@@ -161,6 +161,7 @@ module Phantomjs
         FileUtils.mv(extracted_dir, target)
 
         if File.exist?(phantomjs_path)
+          FileUtils.chmod(0755, phantomjs_path)
           STDOUT.puts "\nSuccessfully installed phantomjs in #{phantomjs_path}. Yay!"
           return
         end
