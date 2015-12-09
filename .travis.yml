@@ -5,11 +5,9 @@ os:
   - linux
   - osx
 rvm:
-  - 1.9
   - 2.0
   - 2.1
   - 2.2
-  - jruby-19mode
 notifications:
   email:
     on_success: always
