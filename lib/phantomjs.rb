@@ -1,4 +1,4 @@
-require "phantomjs/version"
+require 'phantomjs/version'
 require 'fileutils'
 
 module Phantomjs

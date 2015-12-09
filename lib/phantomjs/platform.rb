@@ -1,5 +1,6 @@
-require 'zip'
+require 'net/http'
 require 'tmpdir'
+require 'zip'
 
 module Phantomjs
   class Platform
@@ -20,7 +21,7 @@ module Phantomjs
         if system_phantomjs_installed?
           system_phantomjs_path
         else
-          File.expand_path File.join(Phantomjs.base_dir, platform, 'bin/phantomjs')
+          File.expand_path File.join(Phantomjs.base_dir, platform, 'bin', 'phantomjs')
         end
       end
 
@@ -42,29 +43,25 @@ module Phantomjs
         File.exist?(phantomjs_path) || system_phantomjs_installed?
       end
 
-      # TODO: Clean this up, it looks like a pile of...
       def install!
         STDERR.puts "Phantomjs does not appear to be installed in #{phantomjs_path}, installing!"
-        FileUtils.mkdir_p Phantomjs.base_dir
 
         in_tmp do
-          unless system "curl -L -O #{package_url}" or system "wget #{package_url}"
-            raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
-          end
+          file = download(package_url)
 
-          case package_url.split('.').last
-            when 'bz2'
-              bunzip(File.basename(package_url))
-            when 'zip'
-              unzip(File.basename(package_url))
+          case File.extname(file)
+            when '.bz2'
+              bunzip(file)
+            when '.zip'
+              unzip(file)
             else
-              raise "Unknown compression format for #{File.basename(package_url)}"
+              raise "Unknown compression format for #{file}"
           end
 
           move_to_local_directory
         end
 
-        raise "Failed to install phantomjs. Sorry :(" unless File.exist?(phantomjs_path)
+        raise 'Failed to install phantomjs. Sorry :(' unless File.exist?(phantomjs_path)
       end
 
       def ensure_installed!
@@ -79,6 +76,45 @@ module Phantomjs
           end
         end
       end
+
+      def download(uri, redirect_limit = 10)
+        fail ArgumentError, 'Too many HTTP redirects' if redirect_limit <= 0
+
+        uri = URI(uri)
+        file = File.basename(uri.path)
+
+        Net::HTTP.start(uri.host,
+                        uri.port,
+                        use_ssl: uri.scheme == 'https',
+                        verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
+          request = Net::HTTP::Get.new(uri)
+
+          http.request(request) do |response|
+            case response
+              when Net::HTTPSuccess then
+                File.open(file, 'wb') do |io|
+                  downloaded = 0
+
+                  response.read_body do |chunk|
+                    downloaded += chunk.length
+                    STDOUT.print(sprintf("\r%5.1f%", downloaded.to_f / response.content_length * 100))
+                    STDOUT.flush
+
+                    io.write(chunk)
+                  end
+                end
+              when Net::HTTPRedirection then
+                location = response['Location']
+                return download(location, redirect_limit - 1)
+              else
+                fail "Unknown HTTP response #{response}"
+            end
+          end
+        end
+
+        file
+      end
+
       def bunzip(file)
         bunzip = %W(bunzip2 #{file})
         system(*bunzip)
@@ -108,7 +144,10 @@ module Phantomjs
         fail "Could not find extracted phantomjs directory in #{File.join(Dir.pwd, 'phantomjs*')}" if extracted_dir.nil?
 
         # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
-        if FileUtils.mv(extracted_dir, File.join(Phantomjs.base_dir, platform))
+        target = File.join(Phantomjs.base_dir, platform)
+
+        FileUtils.mkdir_p(File.dirname(target))
+        if FileUtils.mv(extracted_dir, target)
           STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
         end
       end
@@ -170,14 +209,6 @@ module Phantomjs
 
         def platform
           'win32'
-        end
-
-        def phantomjs_path
-          if system_phantomjs_installed?
-            system_phantomjs_path
-          else
-            File.expand_path File.join(Phantomjs.base_dir, platform, 'bin', 'phantomjs.exe')
-          end
         end
 
         def package_url
