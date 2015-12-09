@@ -26,8 +26,7 @@ module Phantomjs
       end
 
       def system_phantomjs_path
-        `which phantomjs`.delete("\n")
-      rescue
+        which('phantomjs')
       end
 
       def system_phantomjs_version
@@ -69,6 +68,14 @@ module Phantomjs
       end
 
       private
+      def which(executable)
+        ENV['PATH']
+          .split(File::PATH_SEPARATOR)
+          .map { |path| File.join(path, executable) }
+          .select { |path| File.file?(path) }
+          .first
+      end
+
       def in_tmp
         Dir.mktmpdir('phantomjs_install') do |dir|
           Dir.chdir(dir) do
