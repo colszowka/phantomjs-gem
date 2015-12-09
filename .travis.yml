@@ -1,6 +1,9 @@
 script:
   - bundle
   - bundle exec rspec
+os:
+  - linux
+  - osx
 rvm:
   - 1.9
   - 2.0
