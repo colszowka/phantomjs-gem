@@ -1,3 +1,5 @@
+require 'zip'
+
 module Phantomjs
   class Platform
     class << self
@@ -60,13 +62,15 @@ module Phantomjs
               system "bunzip2 #{File.basename(package_url)}"
               system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
             when 'zip'
-              system "unzip #{File.basename(package_url)}"
+              unzip(File.basename(package_url))
             else
               raise "Unknown compression format for #{File.basename(package_url)}"
           end
 
           # Find the phantomjs build we just extracted
           extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
+
+          fail "Could not find phantomjs binary in #{File.join(Dir.pwd, 'phantomjs*')}" if extracted_dir.nil?
 
           # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
           if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
@@ -84,6 +88,18 @@ module Phantomjs
 
       def ensure_installed!
         install! unless installed?
+      end
+
+      private
+      def unzip(file)
+        # Overwrite existing files.
+        Zip.on_exists_proc = true
+
+        Zip::File.open(file) do |zip|
+          zip.each do |entry|
+            entry.extract
+          end
+        end
       end
     end
 
