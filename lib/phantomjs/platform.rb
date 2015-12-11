@@ -13,10 +13,6 @@ module Phantomjs
         RbConfig::CONFIG['host_cpu']
       end
 
-      def temp_path
-        ENV['TMPDIR'] || ENV['TEMP'] || '/tmp'
-      end
-
       def phantomjs_path
         if system_phantomjs_installed?
           system_phantomjs_path
