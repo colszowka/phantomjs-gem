@@ -128,14 +128,18 @@ module Phantomjs
 
       def bunzip(file)
         bunzip = %W(bunzip2 #{file})
-        system(*bunzip)
+        unless system(*bunzip)
+          fail "Failed to execute \"#{bunzip.join(' ')}\", exit status #{$?.exitstatus}"
+        end
 
         tarfile = file.sub(/\.bz2$/, '')
         directory = File.join(File.basename(tarfile, File.extname(tarfile)), 'bin')
         FileUtils.mkdir_p(directory)
 
         tar = %W(tar -xf #{tarfile} --directory=#{directory})
-        system(*tar)
+        unless system(*tar)
+          fail "Failed to execute \"#{tar.join(' ')}\", exit status #{$?.exitstatus}"
+        end
       end
 
       def unzip(file)
