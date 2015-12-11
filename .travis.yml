@@ -8,6 +8,10 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
+matrix:
+  exclude:
+    - rvm: 2.2
+      os: osx
 notifications:
   email:
     on_success: always
