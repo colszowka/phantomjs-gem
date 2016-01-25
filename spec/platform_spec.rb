@@ -163,7 +163,7 @@ describe Phantomjs::Platform do
       before(:each) { Phantomjs::Platform.stub(:system_phantomjs_version).and_return(nil) }
 
       it "returns the correct phantom js executable path for the platform" do
-        Phantomjs.path.should =~ /win32\/phantomjs.exe$/
+        Phantomjs.path.should =~ /win32\/bin\/phantomjs.exe$/
       end
     end
 
