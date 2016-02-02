@@ -138,7 +138,7 @@ module Phantomjs
     class Win32 < Platform
       class << self
         def useable?
-          host_os.include?('mingw32') and architecture.include?('i686')
+          host_os.include?('mingw32')
         end
 
         def platform
@@ -156,6 +156,12 @@ module Phantomjs
         def package_url
           'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-windows.zip'
         end
+        
+        def system_phantomjs_path
+          `where phantomjs`.delete("\n")
+        rescue
+        end
+        
       end
     end
   end
