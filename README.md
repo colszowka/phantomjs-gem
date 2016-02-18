@@ -56,6 +56,19 @@ end
 
 Check out [the poltergeist docs](https://www.ruby-toolbox.com/gems/phantomjs) for all the options you can pass in there.
 
+## Usage with WebMock
+
+WebMock will intercept the download of phantomjs. You may want to disable WebMock while the phantomjs downloader runs, e.g. by adding the following lines to `spec/support/phantomjs.rb`:
+
+```ruby
+begin
+  WebMock.disable!
+  Phantomjs.platform
+ensure
+  WebMock.enable!
+end
+```
+
 ## A note about versions.
 
 The gem version consists of 4 digits: The first 3 indicate the phantomjs release installed via this gem, the last one is the internal version of this gem, in case I screw things up and need to push another release in the interim.
