@@ -14,7 +14,7 @@ module Phantomjs
       end
 
       def download_host
-        "https://bitbucket.org/ariya/phantomjs/downloads"
+        ENV.fetch('PHANTOMJS_CDNURL', 'https://bitbucket.org/ariya/phantomjs/downloads')
       end
 
       def phantomjs_path
