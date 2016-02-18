@@ -13,6 +13,10 @@ module Phantomjs
         ENV['TMPDIR'] || ENV['TEMP'] || '/tmp'
       end
 
+      def download_host
+        ENV.fetch('PHANTOMJS_CDNURL', 'https://bitbucket.org/ariya/phantomjs/downloads')
+      end
+
       def phantomjs_path
         if system_phantomjs_installed?
           system_phantomjs_path
@@ -98,7 +102,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
+          "#{download_host}/phantomjs-2.1.1-linux-x86_64.tar.bz2"
         end
       end
     end
@@ -114,7 +118,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-i686.tar.bz2'
+          "#{download_host}/phantomjs-2.1.1-linux-i686.tar.bz2"
         end
       end
     end
@@ -130,7 +134,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-macosx.zip'
+          "#{download_host}/phantomjs-2.1.1-macosx.zip"
         end
       end
     end
@@ -154,7 +158,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-windows.zip'
+          "#{download_host}/phantomjs-2.1.1-windows.zip"
         end
       end
     end
