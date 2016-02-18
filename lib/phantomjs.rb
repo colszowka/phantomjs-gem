@@ -9,8 +9,16 @@ module Phantomjs
       @available_platforms ||= []
     end
 
+    def base_root_dir
+      @base_root_dir ||= File.join(File.expand_path('~'), '.phantomjs')
+    end
+
+    def base_root_dir=(dir)
+      @base_root_dir = dir
+    end
+
     def base_dir
-       @base_dir ||= File.join(File.expand_path('~'), '.phantomjs', version)
+       @base_dir ||= File.join(base_root_dir, version)
     end
 
     def base_dir=(dir)
@@ -36,7 +44,7 @@ module Phantomjs
 
     # Removes the local phantomjs copy
     def implode!
-      FileUtils.rm_rf File.join(File.expand_path('~'), '.phantomjs')
+      FileUtils.rm_rf base_root_dir
     end
 
     # Clears cached state. Primarily useful for testing.
