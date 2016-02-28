@@ -9,10 +9,6 @@ module Phantomjs
         RbConfig::CONFIG['host_cpu']
       end
 
-      def temp_path
-        ENV['TMPDIR'] || ENV['TEMP'] || '/tmp'
-      end
-
       def phantomjs_path
         if system_phantomjs_installed?
           system_phantomjs_path
@@ -43,16 +39,14 @@ module Phantomjs
         STDERR.puts "Phantomjs does not appear to be installed in #{phantomjs_path}, installing!"
         FileUtils.mkdir_p Phantomjs.base_dir
 
-        temp_dir = mktmpdir
+        Dir.mktmpdir do |dir|
+          Dir.chdir dir do
+            download
 
-        Dir.chdir temp_dir do
-          download
+            extract
 
-          extract
-
-          install
-
-          rmtmpdir(temp_dir)
+            install
+          end
         end
 
         raise "Failed to install phantomjs. Sorry :(" unless File.exist?(phantomjs_path)
@@ -83,22 +77,6 @@ module Phantomjs
         # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
         if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
           STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
-        end
-      end
-
-      def mktmpdir
-        # Purge temporary directory if it is still hanging around from previous installs,
-        # then re-create it.
-        temp_dir = File.join(Phantomjs.base_dir, 'tmp')
-        FileUtils.rm_rf temp_dir
-        FileUtils.mkdir_p temp_dir
-        temp_dir
-      end
-
-      def rmtmpdir(dir)
-        # Clean up remaining files in tmp
-        if FileUtils.rm_rf dir
-          STDOUT.puts "Removed temporarily downloaded files."
         end
       end
 
