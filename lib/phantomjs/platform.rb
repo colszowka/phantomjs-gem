@@ -129,10 +129,7 @@ module Phantomjs
         end
 
         tarfile = file.sub(/\.bz2$/, '')
-        directory = File.join(File.basename(tarfile, File.extname(tarfile)), 'bin')
-        FileUtils.mkdir_p(directory)
-
-        tar = %W(tar -xf #{tarfile} --directory=#{directory})
+        tar = %W(tar xf #{tarfile})
         unless system(*tar)
           fail "Failed to execute \"#{tar.join(' ')}\", exit status #{$?.exitstatus}"
         end
