@@ -105,10 +105,10 @@ module Phantomjs
         uri = URI(uri)
         file = File.basename(uri.path)
 
-        Net::HTTP.start(uri.host,
-                        uri.port,
-                        use_ssl: uri.scheme == 'https',
-                        verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
+        opts = { use_ssl: uri.scheme == 'https' }
+        opts[:verify_mode] = OpenSSL::SSL::VERIFY_NONE if self == Win32
+
+        Net::HTTP.start(uri.host, uri.port, opts) do |http|
           request = Net::HTTP::Get.new(uri.request_uri)
 
           http.request(request) do |response|
