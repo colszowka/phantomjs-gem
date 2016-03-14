@@ -16,9 +16,15 @@ rvm:
   - 1.9
   - 2.0
   - 2.1
-  - 2.2
+  - 2.2.3
   - ruby-head
   - jruby-19mode
+matrix:
+  exclude:
+    - rvm: ruby-head
+      os: osx
+    - rvm: jruby-19mode
+      os: osx
 
 notifications:
   email:
