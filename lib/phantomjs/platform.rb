@@ -46,7 +46,9 @@ module Phantomjs
         STDERR.puts "Phantomjs does not appear to be installed in #{phantomjs_path}, installing!"
 
         in_tmp do
-          file = download(package_url)
+          file = with_retry(5) do
+            download(package_url)
+          end
 
           case File.extname(file)
             when '.bz2'
@@ -80,6 +82,21 @@ module Phantomjs
             yield if block_given?
           end
         end
+      end
+
+      def with_retry(tries = 5)
+        yield if block_given?
+      # http://tammersaleh.com/posts/rescuing-net-http-exceptions/
+      rescue Timeout::Error,
+             Errno::EINVAL,
+             Errno::ECONNRESET,
+             EOFError,
+             Net::HTTPBadResponse,
+             Net::HTTPHeaderSyntaxError,
+             Net::ProtocolError => e
+        warn('Retrying download...')
+        retry unless (tries -= 1).zero?
+        raise e
       end
 
       def download(uri, redirect_limit = 10)
