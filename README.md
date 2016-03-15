@@ -7,11 +7,11 @@
 I am lazy as hell, and wanted to be able to install [PhantomJS](http://phantomjs.org) via Rubygems/Bundler when using [poltergeist](https://github.com/jonleighton/poltergeist).
 
 It keeps installations of phantomjs in `$HOME/.phantomjs/VERSION/PLATFORM`. When you call `Phantomjs.path`, it will return the path to the phantomjs executable in there. If that is not present, it will first fetch and
-install the prebuilt packages suitable for the current plattform (currently Linux 32/64 or OS X supported).
+install the prebuilt packages suitable for the current plattform (currently Linux 32/64, OS X or Windows supported).
 
 If there is a phantomjs executable in your `$PATH` that matches the version number packaged in this gem, this one will be used instead of installing one in your `$HOME/.phantomjs`.
 
-You will need `cURL` or `wget` on your system. For extraction, `bunzip2` and `tar` are required on Linux, and `unzip` on OS X. They should be installed already.
+For extraction, `bunzip2` and `tar` are required on Linux. They should be installed already.
 
 **TL;DR:** Instead of manually installing phantomjs on your machines, use this gem. It will take care of it.
 
@@ -55,6 +55,19 @@ end
 ```
 
 Check out [the poltergeist docs](https://www.ruby-toolbox.com/gems/phantomjs) for all the options you can pass in there.
+
+## Usage with WebMock
+
+WebMock will intercept the download of phantomjs. You may want to disable WebMock while the phantomjs downloader runs, e.g. by adding the following lines to `spec/support/phantomjs.rb`:
+
+```ruby
+begin
+  WebMock.disable!
+  Phantomjs.platform
+ensure
+  WebMock.enable!
+end
+```
 
 ## A note about versions.
 

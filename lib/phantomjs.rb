@@ -1,4 +1,4 @@
-require "phantomjs/version"
+require 'phantomjs/version'
 require 'fileutils'
 
 module Phantomjs
@@ -30,7 +30,7 @@ module Phantomjs
         platform.ensure_installed!
         platform
       else
-        raise UnknownPlatform, "Could not find an appropriate PhantomJS library for your platform (#{RUBY_PLATFORM} :( Please install manually."
+        raise UnknownPlatform, "Could not find an appropriate PhantomJS library for your platform (#{RUBY_PLATFORM}) :( Please install manually."
       end
     end
 
