@@ -13,6 +13,10 @@ module Phantomjs
         ENV['TMPDIR'] || ENV['TEMP'] || '/tmp'
       end
 
+      def download_url_base
+        ENV['PHANTOM_DOWNLOAD_URL_BASE'] || "https://bitbucket.org/ariya/phantomjs/downloads"
+      end
+
       def phantomjs_path
         if system_phantomjs_installed?
           system_phantomjs_path
@@ -50,6 +54,7 @@ module Phantomjs
         FileUtils.rm_rf temp_dir
         FileUtils.mkdir_p temp_dir
 
+        STDERR.puts "Downloading from #{package_url}"
         Dir.chdir temp_dir do
           unless system "curl -L --retry 5 -O #{package_url}" or system "wget -t 5 #{package_url}"
             raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
@@ -98,7 +103,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
+          "#{download_url_base}/phantomjs-2.1.1-linux-x86_64.tar.bz2"
         end
       end
     end
@@ -114,7 +119,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-i686.tar.bz2'
+          "#{download_url_base}/phantomjs-2.1.1-linux-i686.tar.bz2"
         end
       end
     end
@@ -130,7 +135,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-macosx.zip'
+          "#{download_url_base}/phantomjs-2.1.1-macosx.zip"
         end
       end
     end
@@ -154,7 +159,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-windows.zip'
+          "#{download_url_base}/phantomjs-2.1.1-windows.zip"
         end
       end
     end
