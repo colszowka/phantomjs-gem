@@ -1,3 +1,5 @@
+require 'mkmf'
+
 module Phantomjs
   class Platform
     class << self
@@ -22,8 +24,7 @@ module Phantomjs
       end
 
       def system_phantomjs_path
-        `which phantomjs`.delete("\n")
-      rescue
+        find_executable('phantomjs')
       end
 
       def system_phantomjs_version
