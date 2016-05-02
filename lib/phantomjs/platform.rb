@@ -39,6 +39,18 @@ module Phantomjs
         File.exist?(phantomjs_path) || system_phantomjs_installed?
       end
 
+      def downloaded?
+        File.exist?(package_file)
+      end
+
+      def package_file
+        File.basename(package_url)
+      end
+
+      def package_url
+        ENV['PHANTOMJS_URL'] || platform_url
+      end
+
       # TODO: Clean this up, it looks like a pile of...
       def install!
         STDERR.puts "Phantomjs does not appear to be installed in #{phantomjs_path}, installing!"
@@ -51,18 +63,20 @@ module Phantomjs
         FileUtils.mkdir_p temp_dir
 
         Dir.chdir temp_dir do
-          unless system "curl -L --retry 5 -O #{package_url}" or system "wget -t 5 #{package_url}"
+          unless downloaded?\
+          or system "curl -L --retry 5 -O #{package_url}"\
+          or system "wget -t 5 #{package_url}"
             raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
           end
 
           case package_url.split('.').last
             when 'bz2'
-              system "bunzip2 #{File.basename(package_url)}"
-              system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
+              system "bunzip2 #{package_file}"
+              system "tar xf #{package_file.sub(/\.bz2$/, '')}"
             when 'zip'
-              system "unzip #{File.basename(package_url)}"
+              system "unzip #{package_file}"
             else
-              raise "Unknown compression format for #{File.basename(package_url)}"
+              raise "Unknown compression format for #{package_file}"
           end
 
           # Find the phantomjs build we just extracted
@@ -97,7 +111,7 @@ module Phantomjs
           'x86_64-linux'
         end
 
-        def package_url
+        def platform_url
           'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
         end
       end
@@ -113,7 +127,7 @@ module Phantomjs
           'x86_32-linux'
         end
 
-        def package_url
+        def platform_url
           'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-i686.tar.bz2'
         end
       end
@@ -129,7 +143,7 @@ module Phantomjs
           'darwin'
         end
 
-        def package_url
+        def platform_url
           'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-macosx.zip'
         end
       end
@@ -153,7 +167,7 @@ module Phantomjs
           end
         end
 
-        def package_url
+        def platform_url
           'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-windows.zip'
         end
       end
