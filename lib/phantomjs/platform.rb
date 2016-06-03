@@ -39,34 +39,12 @@ module Phantomjs
         File.exist?(phantomjs_path) || system_phantomjs_installed?
       end
 
-      # TODO: Clean this up, it looks like a pile of...
       def install!
         STDERR.puts "Phantomjs does not appear to be installed in #{phantomjs_path}, installing!"
-        FileUtils.mkdir_p Phantomjs.base_dir
-
-        # Purge temporary directory if it is still hanging around from previous installs,
-        # then re-create it.
-        temp_dir = File.join(temp_path, 'phantomjs_install')
-        FileUtils.rm_rf temp_dir
-        FileUtils.mkdir_p temp_dir
 
         Dir.chdir temp_dir do
-          unless system "curl -L --retry 5 -O #{package_url}" or system "wget -t 5 #{package_url}"
-            raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
-          end
-
-          case package_url.split('.').last
-            when 'bz2'
-              system "bunzip2 #{File.basename(package_url)}"
-              system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
-            when 'zip'
-              system "unzip #{File.basename(package_url)}"
-            else
-              raise "Unknown compression format for #{File.basename(package_url)}"
-          end
-
-          # Find the phantomjs build we just extracted
-          extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
+          download(package_url)
+          extracted_dir = extract(package_url)
 
           # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
           if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
@@ -84,6 +62,47 @@ module Phantomjs
 
       def ensure_installed!
         install! unless installed?
+      end
+
+      private
+
+      def download(package_url)
+        unless system "curl -L --retry 5 -O #{package_url}" or system "wget -t 5 #{package_url}"
+          raise "\n\nFailed to load phantomjs! :(\nYou need to have cURL or wget installed on your system.\nIf you have, the source of phantomjs might be unavailable: #{package_url}\n\n"
+        end
+      end
+
+      def extract(package_url)
+        basename = File.basename(package_url)
+
+        case package_url.split('.').last
+          when 'bz2'
+            system "bunzip2 #{basename}"
+            system "tar xf #{basename.sub(/\.bz2$/, '')}"
+          when 'zip'
+            system "unzip #{basename}"
+          else
+            raise "Unknown compression format for #{basename}"
+        end
+
+        # Find the phantomjs build we just tried to extracted
+        extracted_dir = Dir['phantomjs*'].find { |path| File.directory?(path) }
+        # If it's not there then extraction failed
+        raise "Failed to extract archive #{basename}" unless extracted_dir
+
+        extracted_dir
+      end
+
+      def temp_dir
+        FileUtils.mkdir_p Phantomjs.base_dir
+
+        # Purge temporary directory if it is still hanging around from previous installs,
+        # then re-create it.
+        dir = File.join(temp_path, 'phantomjs_install')
+        FileUtils.rm_rf dir
+        FileUtils.mkdir_p dir
+
+        dir
       end
     end
 
