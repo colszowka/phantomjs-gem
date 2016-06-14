@@ -22,7 +22,7 @@ module Phantomjs
       end
 
       def system_phantomjs_path
-        `which phantomjs`.delete("\n")
+        `which phantomjs 2>/dev/null`.delete("\n")
       rescue
       end
 
