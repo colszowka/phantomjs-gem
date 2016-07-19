@@ -1,3 +1,3 @@
 module Phantomjs
-  VERSION = "1.9.8.0"
+  VERSION = "2.1.1.0"
 end
