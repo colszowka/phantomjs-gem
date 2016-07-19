@@ -178,6 +178,26 @@ describe Phantomjs::Platform do
       end
     end
 
+    describe "reports the Win32 platform as usable" do
+      it "with mingw32" do
+        Phantomjs::Platform.stub(:host_os).and_return('mingw32')
+        Phantomjs::Platform.stub(:architecture).and_return('i686')
+        Phantomjs::Platform::Win32.should be_useable
+      end
+
+      it "with 32-bit Windows" do
+        Phantomjs::Platform.stub(:host_os).and_return('mswin32')
+        Phantomjs::Platform.stub(:architecture).and_return('i686')
+        Phantomjs::Platform::Win32.should be_useable
+      end
+
+      it "with 64-bit Windows" do
+        Phantomjs::Platform.stub(:host_os).and_return('mswin32')
+        Phantomjs::Platform.stub(:architecture).and_return('x86_64')
+        Phantomjs::Platform::Win32.should be_useable
+      end
+    end
+
     it "reports the Darwin platform as unuseable" do
       Phantomjs::Platform::OsX.should_not be_useable
     end

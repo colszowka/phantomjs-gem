@@ -31,6 +31,8 @@ module Phantomjs
       rescue
       end
 
+      # NOTE: Will ALWAYS fail on a system that does not have a which command (Windows)
+      # Not a breaking bug since it will just install again in phantomjs_path and be done with it
       def system_phantomjs_installed?
         system_phantomjs_version == Phantomjs.version
       end
@@ -138,11 +140,16 @@ module Phantomjs
     class Win32 < Platform
       class << self
         def useable?
-          host_os.include?('mingw32') and architecture.include?('i686')
+          host_os =~ /mingw|mswin|cygwin/
         end
 
         def platform
           'win32'
+        end
+
+        def system_phantomjs_path
+          `where phantomjs`.split("\n")[0]
+        rescue
         end
 
         def phantomjs_path
