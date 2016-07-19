@@ -140,7 +140,7 @@ module Phantomjs
     class Win32 < Platform
       class << self
         def useable?
-          host_os =~ /mingw32|mswin|windows/ && architecture =~ /x86|i.86/
+          host_os =~ /mingw|mswin|cygwin/
         end
 
         def platform
@@ -148,7 +148,7 @@ module Phantomjs
         end
 
         def system_phantomjs_path
-          `where phantomjs`.delete("\n")
+          `where phantomjs`.split("\n")[0]
         rescue
         end
 
