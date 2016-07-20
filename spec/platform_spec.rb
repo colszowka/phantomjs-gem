@@ -170,7 +170,7 @@ describe Phantomjs::Platform do
     describe "with system install" do
       before(:each) do
         Phantomjs::Platform.stub(:system_phantomjs_version).and_return(Phantomjs.version)
-        Phantomjs::Platform.stub(:system_phantomjs_path).and_return("#{ENV['TEMP']}/path")
+        Phantomjs::Platform::Win32.stub(:system_phantomjs_path).and_return("#{ENV['TEMP']}/path")
       end
 
       it "returns the correct phantom js executable path for the platform" do
