@@ -47,4 +47,13 @@ describe Phantomjs do
       lines.should eq(["bar foo1\n", "bar foo2\n"])
     end
   end
+
+  describe ".implode!" do
+    it "removes the local phantomjs copy from custom base_dir" do
+      Phantomjs.base_dir = '/tmp/base_dir'
+      Phantomjs.path.platform.installed?.should be_true
+      Phantomjs.implode!
+      Dir.exist?('/tmp/base_dir').should be_false
+    end
+  end
 end
