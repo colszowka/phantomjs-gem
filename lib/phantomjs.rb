@@ -36,7 +36,7 @@ module Phantomjs
 
     # Removes the local phantomjs copy
     def implode!
-      FileUtils.rm_rf File.join(File.expand_path('~'), '.phantomjs')
+      FileUtils.rm_rf base_dir
     end
 
     # Clears cached state. Primarily useful for testing.
