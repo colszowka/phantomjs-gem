@@ -46,8 +46,9 @@ module Phantomjs
 
     # Run phantomjs with the given arguments, and either
     # return the stdout or yield each line to the passed block.
-    def run(*args, &block)
-      IO.popen([path, *args]) do |io|
+    def run(env, *args, &block)
+      env ||= {}
+      IO.popen(env, [path, *args]) do |io|
         block ? io.each(&block) : io.read
       end
     end
