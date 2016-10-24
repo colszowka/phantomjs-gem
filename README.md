@@ -56,6 +56,22 @@ end
 
 Check out [the poltergeist docs](https://www.ruby-toolbox.com/gems/phantomjs) for all the options you can pass in there.
 
+#### Custom base directory
+
+To customize the base directory where phantomjs will be installed, you should set the `base_dir` before loading the package. To do that, Add the following line to your `Gemfile`:
+
+```ruby
+gem 'phantomjs', require: false
+```
+
+And in your test/spec helper:
+
+```ruby
+require 'phantomjs'
+Phantomjs.base_dir = '...'
+require 'phantomjs/poltergeist'
+```
+
 ## A note about versions.
 
 The gem version consists of 4 digits: The first 3 indicate the phantomjs release installed via this gem, the last one is the internal version of this gem, in case I screw things up and need to push another release in the interim.
