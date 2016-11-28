@@ -153,6 +153,11 @@ module Phantomjs
           end
         end
 
+        def system_phantomjs_path
+          `where phantomjs`.delete("\n")
+        rescue
+        end
+
         def package_url
           'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-windows.zip'
         end
