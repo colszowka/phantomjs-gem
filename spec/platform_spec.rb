@@ -9,6 +9,12 @@ describe Phantomjs::Platform do
         expect(Phantomjs::Platform.system_phantomjs_installed?).to be_true
       end
 
+      it "is true when the system version is larger than the Phantomjs vesion" do
+        Phantomjs.should_receive(:version).and_return('1.9.2')
+        Phantomjs::Platform.should_receive(:system_phantomjs_version).and_return('1.9.6')
+        expect(Phantomjs::Platform.system_phantomjs_installed?).to be_true
+      end
+
       it "is false when the system version does not match Phantomjs.version" do
         Phantomjs::Platform.should_receive(:system_phantomjs_version).and_return('1.2.3')
         expect(Phantomjs::Platform.system_phantomjs_installed?).to be_false
