@@ -57,8 +57,7 @@ module Phantomjs
 
           case package_url.split('.').last
             when 'bz2'
-              system "bunzip2 #{File.basename(package_url)}"
-              system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
+              system "tar jxf #{File.basename(package_url)}"
             when 'gz'
               system "tar zxf #{File.basename(package_url)}"
             when 'zip'
