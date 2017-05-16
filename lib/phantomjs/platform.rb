@@ -75,6 +75,10 @@ module Phantomjs
             STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
           end
 
+          if File.exist?(phantomjs_path) and not File.executable?(phantomjs_path)
+            File.chmod 755, phantomjs_path
+          end
+
           # Clean up remaining files in tmp
           if FileUtils.rm_rf temp_dir
             STDOUT.puts "Removed temporarily downloaded files."
