@@ -1,6 +1,13 @@
+# Use Ubuntu 14.04
+dist: trusty
+# Container-based builds
+sudo: false
 script:
   - bundle
   - bundle exec rspec
+cache:
+  - apt
+  - bundler
 rvm:
   - 1.9
   - 2.0
