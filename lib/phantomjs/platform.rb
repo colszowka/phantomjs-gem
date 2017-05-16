@@ -98,7 +98,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta-linux-ubuntu-trusty-x86_64.tar.gz'
         end
       end
     end
@@ -114,7 +114,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-macosx.zip'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta-macos.zip'
         end
       end
     end
@@ -138,7 +138,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-windows.zip'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta-windows.zip'
         end
       end
     end
