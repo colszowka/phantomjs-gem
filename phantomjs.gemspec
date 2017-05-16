@@ -16,6 +16,13 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake'
   if RUBY_VERSION < '2'
     gem.add_development_dependency "mime-types", "~> 2.6"
+    gem.add_development_dependency 'addressable', '~> 2.4.0'
+  end
+  if RUBY_VERSION < '2.1'
+    gem.add_development_dependency "nokogiri", "~> 1.6.8.1"
+  end
+  if RUBY_VERSION < '2.2'
+    gem.add_development_dependency "rack", "~> 1.6.7"
   end
 
   gem.files         = `git ls-files`.split($\)
