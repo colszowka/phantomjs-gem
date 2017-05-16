@@ -103,22 +103,6 @@ module Phantomjs
       end
     end
 
-    class Linux32 < Platform
-      class << self
-        def useable?
-          host_os.include?('linux') and (architecture.include?('x86_32') or architecture.include?('i686'))
-        end
-
-        def platform
-          'x86_32-linux'
-        end
-
-        def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-i686.tar.bz2'
-        end
-      end
-    end
-
     class OsX < Platform
       class << self
         def useable?
