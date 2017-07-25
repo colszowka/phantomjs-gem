@@ -57,8 +57,9 @@ module Phantomjs
 
           case package_url.split('.').last
             when 'bz2'
-              system "bunzip2 #{File.basename(package_url)}"
-              system "tar xf #{File.basename(package_url).sub(/\.bz2$/, '')}"
+              system "tar jxf #{File.basename(package_url)}"
+            when 'gz'
+              system "tar zxf #{File.basename(package_url)}"
             when 'zip'
               system "unzip #{File.basename(package_url)}"
             else
@@ -71,6 +72,10 @@ module Phantomjs
           # Move the extracted phantomjs build to $HOME/.phantomjs/version/platform
           if FileUtils.mv extracted_dir, File.join(Phantomjs.base_dir, platform)
             STDOUT.puts "\nSuccessfully installed phantomjs. Yay!"
+          end
+
+          if File.exist?(phantomjs_path) and not File.executable?(phantomjs_path)
+            File.chmod 755, phantomjs_path
           end
 
           # Clean up remaining files in tmp
@@ -98,23 +103,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2'
-        end
-      end
-    end
-
-    class Linux32 < Platform
-      class << self
-        def useable?
-          host_os.include?('linux') and (architecture.include?('x86_32') or architecture.include?('i686'))
-        end
-
-        def platform
-          'x86_32-linux'
-        end
-
-        def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-i686.tar.bz2'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta-linux-ubuntu-trusty-x86_64.tar.gz'
         end
       end
     end
@@ -130,7 +119,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-macosx.zip'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta-macos.zip'
         end
       end
     end
@@ -154,7 +143,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-windows.zip'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta2-windows.zip'
         end
       end
     end

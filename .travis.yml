@@ -1,12 +1,29 @@
+# Use Ubuntu 14.04
+dist: trusty
+# Container-based builds
+sudo: false
 script:
   - bundle
   - bundle exec rspec
+cache:
+  - apt
+  - bundler
 rvm:
   - 1.9
   - 2.0
   - 2.1
   - 2.2
   - jruby-19mode
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntu-toolchain-r/test'
+    packages:
+      - libicu-dev
+      - libhyphen0
+      - webp
+      - gcc-4.9
+      - g++-4.9
 notifications:
   email:
     on_success: always
