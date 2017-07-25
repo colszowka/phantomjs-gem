@@ -143,7 +143,7 @@ module Phantomjs
         end
 
         def package_url
-          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta-windows.zip'
+          'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.5.0-beta2-windows.zip'
         end
       end
     end
