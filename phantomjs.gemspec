@@ -20,6 +20,8 @@ Gem::Specification.new do |gem|
   end
   if RUBY_VERSION < '2.1'
     gem.add_development_dependency "nokogiri", "~> 1.6.8.1"
+  elsif RUBY_VERSION < '2.2'
+    gem.add_development_dependency 'nokogiri', '~> 1.7.0'
   end
   if RUBY_VERSION < '2.2'
     gem.add_development_dependency "rack", "~> 1.6.7"
